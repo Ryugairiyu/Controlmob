@@ -47,7 +47,7 @@ AUalert="\nThis Script Auto-Updates\nPlease Wait...\n"
 -- [START] / [NO] 
 ------------------------------------------------------------------------------
 
-OFF="× " ON="√ "
+OFF="❌ " ON="✅ "
 NA=OFF DC=OFF WS=OFF 
 CD=OFF BL=OFF DU=OFF 
 LB=OFF ED=OFF TH=OFF 
