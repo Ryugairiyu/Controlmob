@@ -1,4 +1,4 @@
- --
+ 
 -- MobControl(AU)[32+64]-v15.01--APEX[GG]v2
 -- Written on v 2.79.2
 LUA = 'MOB_CONTROL'
@@ -64,8 +64,9 @@ mc=gg.multiChoice({
 	NA.."REMOVE ADS", 
 	DU.."RELEASE ULTIMATE",
 	ST.."FREE SKIP",
-	BL.."INCREASE BONUS LVL", 
-	TM.."COST REVENGE",
+	BL.."BONUS LVL", 
+	NM.."COST REVENGE",
+	CB.."UPGRADE BUILDING",
 	"[ EXIT ]"},
     {},xTAGx.."\n"..UPDATE.."\n"..GLabel.." "..GVersion.." "..xBITx)
 	
@@ -76,12 +77,12 @@ mc=gg.multiChoice({
 	if mc[4] then ultimate() end
 	if mc[5] then skip() end
 	if mc[6] then bonus() end 
-	if mc[7] then pos() end 
-	
+	if mc[7] then neg() end 
+	if mc[8] then build() end 
 
 		
 
-	if mc[8] then exit() return end 
+	if mc[9] then exit() return end 
 	
 
 
@@ -136,8 +137,8 @@ function cards()
 ERR(4,8) if E==1 then error() return end 
 x=1 HACK(4,4,CD) 
 x=0 HACK(5,6,CD) 
-    if is64 then x={'52879600h','72BFFFE0h','D65F03C0h'} -- ( -50k int )
-        else x={'E3030CB0h','E34F0FFFh','E12FFF1Eh'}
+    if is64 then x={'528F2C00h','72BFFFC0h','D65F03C0h'} -- ( -100k int )
+        else x={'E3070960h','E34F0FFEh','E12FFF1Eh'}
     end
 HACK(7,8,CD) 
 CD=ONOFF(CD) 
@@ -205,8 +206,8 @@ A[15].method="Consume"  -- void
 
 function skip()
 ERR(14,15) if E==1 then error() return end 
-    if is64 then x={'1283DFE0h','72A0BEA0h','D65F03C0h'}  -- 100m int 
-        else x={'E30E0100h','E34005F5h','E12FFF1Eh'}
+    if is64 then x={'1286C000h','72A77340h','D65F03C0h'}  -- 100m int 
+        else x={'E30C09FFh','E3430B9Ah','E12FFF1Eh'}
     end
 HACK(14,14,ST) 
 x=0 HACK(15,15,ST) 
@@ -221,8 +222,8 @@ A[16].method="GetAttackCost"
 
 function pos() 
 if A[16].error==1 then error() return end
-    if is64 then x={'528CA000h','72A3B9A0h','D65F03C0h'} -- +500m int
-        else x={'E3060500h','E3410DCDh','E12FFF1Eh'}
+    if is64 then x={'1286C000h','72A77340h','D65F03C0h'} -- +500m int
+        else x={'E30C09FFh','E3430B9Ah','E12FFF1Eh'}
     end
 HACK(16,16,TM) TM=ONOFF(TM) 
 NM=OFF
@@ -232,13 +233,19 @@ end
 
 function neg()
 if A[16].error==1 then error() return end
-    if is64 then x={'128C9FE0h','72BC4640h','D65F03C0h'}  -- ( -500m )
-        else x={'E3090B00h','E34E0232h','E12FFF1Eh'}
+    if is64 then x={'5286C020h','72B88CA0h','D65F03C0h'}  -- ( -500m )
+        else x={'E3030601h','E34C0465h','E12FFF1Eh'}
     end 
 HACK(16,16,NM) NM=ONOFF(NM) 
-TM=OFF
 end 
  
+ A[17].method="HaveCost"
+A[18].method="CanAffordBricksCost" 
+
+function build()
+ERR(17,18) if E==1 then error() return end 
+x=1 HACK(17,18,CB) CB=ONOFF(CB) 
+end 
 --███████████████████████
 
 -- class JobCosts
